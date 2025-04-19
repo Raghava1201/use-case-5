@@ -1,3 +1,5 @@
+name: Terraform use-case-5
+
 on:
   push:
     branches:
