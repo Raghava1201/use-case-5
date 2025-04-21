@@ -2,13 +2,80 @@
 This file was generated during the github actions workflow run.
 
 ## Terraform Plan Output
-[command]/home/runner/work/_temp/14fd3bf6-9d6b-4113-870e-1128f2582dd2/terraform-bin plan -no-color -lock=false
+[command]/home/runner/work/_temp/e4472cba-de29-4f42-bba3-83b7ebd63cf0/terraform-bin plan -no-color -lock=false
+random_password.master: Refreshing state... [id=none]
+module.aurora_db.aws_db_subnet_group.aurora_subnet_group: Refreshing state... [id=bayer-aurora-project-aurora-subnet-group]
+aws_security_group.aurora_sg: Refreshing state... [id=sg-051e98fd8877ad2fb]
+module.aurora_db.aws_rds_cluster.aurora1: Refreshing state... [id=bayer-aurora-project-aurora]
 
 Terraform used the selected providers to generate the following execution
 plan. Resource actions are indicated with the following symbols:
   + create
+  - destroy
 
 Terraform will perform the following actions:
+
+  # aws_security_group.aurora_sg will be destroyed
+  # (because aws_security_group.aurora_sg is not in configuration)
+  - resource "aws_security_group" "aurora_sg" {
+      - arn                    = "arn:aws:ec2:us-east-1:154767946691:security-group/sg-051e98fd8877ad2fb" -> null
+      - description            = "Security group for AuroraDB access" -> null
+      - egress                 = [
+          - {
+              - cidr_blocks      = [
+                  - "0.0.0.0/0",
+                ]
+              - from_port        = 0
+              - ipv6_cidr_blocks = []
+              - prefix_list_ids  = []
+              - protocol         = "-1"
+              - security_groups  = []
+              - self             = false
+              - to_port          = 0
+                # (1 unchanged attribute hidden)
+            },
+        ] -> null
+      - id                     = "sg-051e98fd8877ad2fb" -> null
+      - ingress                = [
+          - {
+              - cidr_blocks      = [
+                  - "148.64.4.52/32",
+                ]
+              - description      = "Allow MySQL/PostgreSQL access from specific IP"
+              - from_port        = 3306
+              - ipv6_cidr_blocks = []
+              - prefix_list_ids  = []
+              - protocol         = "tcp"
+              - security_groups  = []
+              - self             = false
+              - to_port          = 3306
+            },
+          - {
+              - cidr_blocks      = [
+                  - "172.31.32.0/20",
+                ]
+              - description      = "Allow traffic within the VPC (adjust as needed)"
+              - from_port        = 0
+              - ipv6_cidr_blocks = []
+              - prefix_list_ids  = []
+              - protocol         = "tcp"
+              - security_groups  = []
+              - self             = false
+              - to_port          = 65535
+            },
+        ] -> null
+      - name                   = "bayer-aurora-project-aurora-sg" -> null
+      - owner_id               = "154767946691" -> null
+      - revoke_rules_on_delete = false -> null
+      - tags                   = {
+          - "Name" = "bayer-aurora-project-aurora-sg"
+        } -> null
+      - tags_all               = {
+          - "Name" = "bayer-aurora-project-aurora-sg"
+        } -> null
+      - vpc_id                 = "vpc-06cab60814e52bf9c" -> null
+        # (1 unchanged attribute hidden)
+    }
 
   # aws_security_group.ec2-sg will be created
   + resource "aws_security_group" "ec2-sg" {
@@ -69,6 +136,108 @@ Terraform will perform the following actions:
           + "Name" = "server"
         }
       + vpc_id                 = "vpc-06cab60814e52bf9c"
+    }
+
+  # random_password.master will be destroyed
+  # (because random_password.master is not in configuration)
+  - resource "random_password" "master" {
+      - bcrypt_hash      = (sensitive value) -> null
+      - id               = "none" -> null
+      - length           = 16 -> null
+      - lower            = true -> null
+      - min_lower        = 0 -> null
+      - min_numeric      = 0 -> null
+      - min_special      = 0 -> null
+      - min_upper        = 0 -> null
+      - number           = true -> null
+      - numeric          = true -> null
+      - override_special = "!#$%&*()-_=+[]{}?:." -> null
+      - result           = (sensitive value) -> null
+      - special          = true -> null
+      - upper            = true -> null
+    }
+
+  # module.aurora_db.aws_db_subnet_group.aurora_subnet_group will be destroyed
+  # (because aws_db_subnet_group.aurora_subnet_group is not in configuration)
+  - resource "aws_db_subnet_group" "aurora_subnet_group" {
+      - arn                     = "arn:aws:rds:us-east-1:154767946691:subgrp:bayer-aurora-project-aurora-subnet-group" -> null
+      - description             = "Managed by Terraform" -> null
+      - id                      = "bayer-aurora-project-aurora-subnet-group" -> null
+      - name                    = "bayer-aurora-project-aurora-subnet-group" -> null
+      - subnet_ids              = [
+          - "subnet-0d60f17ef3c678f24",
+          - "subnet-0d8aaf049924e623f",
+        ] -> null
+      - supported_network_types = [
+          - "IPV4",
+        ] -> null
+      - tags                    = {} -> null
+      - tags_all                = {} -> null
+      - vpc_id                  = "vpc-06cab60814e52bf9c" -> null
+        # (1 unchanged attribute hidden)
+    }
+
+  # module.aurora_db.aws_rds_cluster.aurora1 will be destroyed
+  # (because aws_rds_cluster.aurora1 is not in configuration)
+  - resource "aws_rds_cluster" "aurora1" {
+      - allocated_storage                     = 1 -> null
+      - arn                                   = "arn:aws:rds:us-east-1:154767946691:cluster:bayer-aurora-project-aurora" -> null
+      - availability_zones                    = [
+          - "us-east-1a",
+          - "us-east-1c",
+          - "us-east-1d",
+        ] -> null
+      - backtrack_window                      = 0 -> null
+      - backup_retention_period               = 1 -> null
+      - cluster_identifier                    = "bayer-aurora-project-aurora" -> null
+      - cluster_members                       = [
+          - "bayer-aurora-project-aurora-1",
+          - "bayer-aurora-project-aurora-2",
+        ] -> null
+      - cluster_resource_id                   = "cluster-4FHOCQ5MYR2QBRRRZZGCEA34S4" -> null
+      - copy_tags_to_snapshot                 = false -> null
+      - database_insights_mode                = "standard" -> null
+      - database_name                         = "bayerdb" -> null
+      - db_cluster_parameter_group_name       = "default.aurora-mysql5.7" -> null
+      - db_subnet_group_name                  = "bayer-aurora-project-aurora-subnet-group" -> null
+      - delete_automated_backups              = true -> null
+      - deletion_protection                   = true -> null
+      - enable_global_write_forwarding        = false -> null
+      - enable_http_endpoint                  = false -> null
+      - enable_local_write_forwarding         = false -> null
+      - enabled_cloudwatch_logs_exports       = [] -> null
+      - endpoint                              = "bayer-aurora-project-aurora.cluster-c6lacmq0ep44.us-east-1.rds.amazonaws.com" -> null
+      - engine                                = "aurora-mysql" -> null
+      - engine_lifecycle_support              = "open-source-rds-extended-support" -> null
+      - engine_mode                           = "provisioned" -> null
+      - engine_version                        = "5.7.mysql_aurora.2.12.5" -> null
+      - engine_version_actual                 = "5.7.mysql_aurora.2.12.5" -> null
+      - final_snapshot_identifier             = "final-bayer-aurora-project-aurora-2025-04-20T123634Z" -> null
+      - hosted_zone_id                        = "Z2R2ITUGPM61AM" -> null
+      - iam_database_authentication_enabled   = false -> null
+      - iam_roles                             = [] -> null
+      - id                                    = "bayer-aurora-project-aurora" -> null
+      - iops                                  = 0 -> null
+      - master_password                       = (sensitive value) -> null
+      - master_password_wo                    = (write-only attribute) -> null
+      - master_user_secret                    = [] -> null
+      - master_username                       = "admin" -> null
+      - monitoring_interval                   = 0 -> null
+      - network_type                          = "IPV4" -> null
+      - performance_insights_enabled          = false -> null
+      - performance_insights_retention_period = 0 -> null
+      - port                                  = 3306 -> null
+      - preferred_backup_window               = "04:26-04:56" -> null
+      - preferred_maintenance_window          = "fri:10:12-fri:10:42" -> null
+      - reader_endpoint                       = "bayer-aurora-project-aurora.cluster-ro-c6lacmq0ep44.us-east-1.rds.amazonaws.com" -> null
+      - skip_final_snapshot                   = false -> null
+      - storage_encrypted                     = false -> null
+      - tags                                  = {} -> null
+      - tags_all                              = {} -> null
+      - vpc_security_group_ids                = [
+          - "sg-051e98fd8877ad2fb",
+        ] -> null
+        # (12 unchanged attributes hidden)
     }
 
   # module.ec2_instance.aws_instance.server will be created
@@ -145,7 +314,7 @@ Terraform will perform the following actions:
       + root_block_device (known after apply)
     }
 
-Plan: 2 to add, 0 to change, 0 to destroy.
+Plan: 2 to add, 0 to change, 4 to destroy.
 
 Changes to Outputs:
   + instance_id        = (known after apply)
@@ -157,6 +326,6 @@ Changes to Outputs:
 Note: You didn't use the -out option to save this plan, so Terraform can't
 guarantee to take exactly these actions if you run "terraform apply" now.
 ::debug::Terraform exited with code 0.
-::debug::stdout: %0ATerraform used the selected providers to generate the following execution%0Aplan. Resource actions are indicated with the following symbols:%0A  + create%0A%0ATerraform will perform the following actions:%0A%0A  # aws_security_group.ec2-sg will be created%0A  + resource "aws_security_group" "ec2-sg" {%0A      + arn                    = (known after apply)%0A      + description            = "Managed by Terraform"%0A      + egress                 = [%0A          + {%0A              + cidr_blocks      = [%0A                  + "0.0.0.0/0",%0A                ]%0A              + from_port        = 0%0A              + ipv6_cidr_blocks = []%0A              + prefix_list_ids  = []%0A              + protocol         = "-1"%0A              + security_groups  = []%0A              + self             = false%0A              + to_port          = 0%0A                # (1 unchanged attribute hidden)%0A            },%0A        ]%0A      + id                     = (known after apply)%0A      + ingress                = [%0A          + {%0A              + cidr_blocks      = [%0A                  + "0.0.0.0/0",%0A                ]%0A              + from_port        = 22%0A              + ipv6_cidr_blocks = []%0A              + prefix_list_ids  = []%0A              + protocol         = "tcp"%0A              + security_groups  = []%0A              + self             = false%0A              + to_port          = 22%0A                # (1 unchanged attribute hidden)%0A            },%0A          + {%0A              + cidr_blocks      = [%0A                  + "0.0.0.0/0",%0A                ]%0A              + from_port        = 80%0A              + ipv6_cidr_blocks = []%0A              + prefix_list_ids  = []%0A              + protocol         = "tcp"%0A              + security_groups  = []%0A              + self             = false%0A              + to_port          = 80%0A                # (1 unchanged attribute hidden)%0A            },%0A        ]%0A      + name                   = (known after apply)%0A      + name_prefix            = (known after apply)%0A      + owner_id               = (known after apply)%0A      + revoke_rules_on_delete = false%0A      + tags                   = {%0A          + "Name" = "server"%0A        }%0A      + tags_all               = {%0A          + "Name" = "server"%0A        }%0A      + vpc_id                 = "vpc-06cab60814e52bf9c"%0A    }%0A%0A  # module.ec2_instance.aws_instance.server will be created%0A  + resource "aws_instance" "server" {%0A      + ami                                  = "ami-0f9de6e2d2f067fca"%0A      + arn                                  = (known after apply)%0A      + associate_public_ip_address          = (known after apply)%0A      + availability_zone                    = (known after apply)%0A      + cpu_core_count                       = (known after apply)%0A      + cpu_threads_per_core                 = (known after apply)%0A      + disable_api_stop                     = (known after apply)%0A      + disable_api_termination              = (known after apply)%0A      + ebs_optimized                        = (known after apply)%0A      + enable_primary_ipv6                  = (known after apply)%0A      + get_password_data                    = false%0A      + host_id                              = (known after apply)%0A      + host_resource_group_arn              = (known after apply)%0A      + iam_instance_profile                 = (known after apply)%0A      + id                                   = (known after apply)%0A      + instance_initiated_shutdown_behavior = (known after apply)%0A      + instance_lifecycle                   = (known after apply)%0A      + instance_state                       = (known after apply)%0A      + instance_type                        = "t2.micro"%0A      + ipv6_address_count                   = (known after apply)%0A      + ipv6_addresses                       = (known after apply)%0A      + key_name                             = "hcl"%0A      + monitoring                           = (known after apply)%0A      + outpost_arn                          = (known after apply)%0A      + password_data                        = (known after apply)%0A      + placement_group                      = (known after apply)%0A      + placement_partition_number           = (known after apply)%0A      + primary_network_interface_id         = (known after apply)%0A      + private_dns                          = (known after apply)%0A      + private_ip                           = (known after apply)%0A      + public_dns                           = (known after apply)%0A      + public_ip                            = (known after apply)%0A      + secondary_private_ips                = (known after apply)%0A      + security_groups                      = (known after apply)%0A      + source_dest_check                    = true%0A      + spot_instance_request_id             = (known after apply)%0A      + subnet_id                            = (known after apply)%0A      + tags                                 = {%0A          + "Name" = "server"%0A        }%0A      + tags_all                             = {%0A          + "Name" = "server"%0A        }%0A      + tenancy                              = (known after apply)%0A      + user_data                            = "0bb66253965fd352048926f2f17da5f0bf35b2cc"%0A      + user_data_base64                     = (known after apply)%0A      + user_data_replace_on_change          = false%0A      + vpc_security_group_ids               = (known after apply)%0A%0A      + capacity_reservation_specification (known after apply)%0A%0A      + cpu_options (known after apply)%0A%0A      + ebs_block_device (known after apply)%0A%0A      + enclave_options (known after apply)%0A%0A      + ephemeral_block_device (known after apply)%0A%0A      + instance_market_options (known after apply)%0A%0A      + maintenance_options (known after apply)%0A%0A      + metadata_options (known after apply)%0A%0A      + network_interface (known after apply)%0A%0A      + private_dns_name_options (known after apply)%0A%0A      + root_block_device (known after apply)%0A    }%0A%0APlan: 2 to add, 0 to change, 0 to destroy.%0A%0AChanges to Outputs:%0A  + instance_id        = (known after apply)%0A  + instance_public_ip = (known after apply)%0A  + security_group_id  = (known after apply)%0A%0A─────────────────────────────────────────────────────────────────────────────%0A%0ANote: You didn't use the -out option to save this plan, so Terraform can't%0Aguarantee to take exactly these actions if you run "terraform apply" now.%0A
+::debug::stdout: random_password.master: Refreshing state... [id=none]%0Amodule.aurora_db.aws_db_subnet_group.aurora_subnet_group: Refreshing state... [id=bayer-aurora-project-aurora-subnet-group]%0Aaws_security_group.aurora_sg: Refreshing state... [id=sg-051e98fd8877ad2fb]%0Amodule.aurora_db.aws_rds_cluster.aurora1: Refreshing state... [id=bayer-aurora-project-aurora]%0A%0ATerraform used the selected providers to generate the following execution%0Aplan. Resource actions are indicated with the following symbols:%0A  + create%0A  - destroy%0A%0ATerraform will perform the following actions:%0A%0A  # aws_security_group.aurora_sg will be destroyed%0A  # (because aws_security_group.aurora_sg is not in configuration)%0A  - resource "aws_security_group" "aurora_sg" {%0A      - arn                    = "arn:aws:ec2:us-east-1:154767946691:security-group/sg-051e98fd8877ad2fb" -> null%0A      - description            = "Security group for AuroraDB access" -> null%0A      - egress                 = [%0A          - {%0A              - cidr_blocks      = [%0A                  - "0.0.0.0/0",%0A                ]%0A              - from_port        = 0%0A              - ipv6_cidr_blocks = []%0A              - prefix_list_ids  = []%0A              - protocol         = "-1"%0A              - security_groups  = []%0A              - self             = false%0A              - to_port          = 0%0A                # (1 unchanged attribute hidden)%0A            },%0A        ] -> null%0A      - id                     = "sg-051e98fd8877ad2fb" -> null%0A      - ingress                = [%0A          - {%0A              - cidr_blocks      = [%0A                  - "148.64.4.52/32",%0A                ]%0A              - description      = "Allow MySQL/PostgreSQL access from specific IP"%0A              - from_port        = 3306%0A              - ipv6_cidr_blocks = []%0A              - prefix_list_ids  = []%0A              - protocol         = "tcp"%0A              - security_groups  = []%0A              - self             = false%0A              - to_port          = 3306%0A            },%0A          - {%0A              - cidr_blocks      = [%0A                  - "172.31.32.0/20",%0A                ]%0A              - description      = "Allow traffic within the VPC (adjust as needed)"%0A              - from_port        = 0%0A              - ipv6_cidr_blocks = []%0A              - prefix_list_ids  = []%0A              - protocol         = "tcp"%0A              - security_groups  = []%0A              - self             = false%0A              - to_port          = 65535%0A            },%0A        ] -> null%0A      - name                   = "bayer-aurora-project-aurora-sg" -> null%0A      - owner_id               = "154767946691" -> null%0A      - revoke_rules_on_delete = false -> null%0A      - tags                   = {%0A          - "Name" = "bayer-aurora-project-aurora-sg"%0A        } -> null%0A      - tags_all               = {%0A          - "Name" = "bayer-aurora-project-aurora-sg"%0A        } -> null%0A      - vpc_id                 = "vpc-06cab60814e52bf9c" -> null%0A        # (1 unchanged attribute hidden)%0A    }%0A%0A  # aws_security_group.ec2-sg will be created%0A  + resource "aws_security_group" "ec2-sg" {%0A      + arn                    = (known after apply)%0A      + description            = "Managed by Terraform"%0A      + egress                 = [%0A          + {%0A              + cidr_blocks      = [%0A                  + "0.0.0.0/0",%0A                ]%0A              + from_port        = 0%0A              + ipv6_cidr_blocks = []%0A              + prefix_list_ids  = []%0A              + protocol         = "-1"%0A              + security_groups  = []%0A              + self             = false%0A              + to_port          = 0%0A                # (1 unchanged attribute hidden)%0A            },%0A        ]%0A      + id                     = (known after apply)%0A      + ingress                = [%0A          + {%0A              + cidr_blocks      = [%0A                  + "0.0.0.0/0",%0A                ]%0A              + from_port        = 22%0A              + ipv6_cidr_blocks = []%0A              + prefix_list_ids  = []%0A              + protocol         = "tcp"%0A              + security_groups  = []%0A              + self             = false%0A              + to_port          = 22%0A                # (1 unchanged attribute hidden)%0A            },%0A          + {%0A              + cidr_blocks      = [%0A                  + "0.0.0.0/0",%0A                ]%0A              + from_port        = 80%0A              + ipv6_cidr_blocks = []%0A              + prefix_list_ids  = []%0A              + protocol         = "tcp"%0A              + security_groups  = []%0A              + self             = false%0A              + to_port          = 80%0A                # (1 unchanged attribute hidden)%0A            },%0A        ]%0A      + name                   = (known after apply)%0A      + name_prefix            = (known after apply)%0A      + owner_id               = (known after apply)%0A      + revoke_rules_on_delete = false%0A      + tags                   = {%0A          + "Name" = "server"%0A        }%0A      + tags_all               = {%0A          + "Name" = "server"%0A        }%0A      + vpc_id                 = "vpc-06cab60814e52bf9c"%0A    }%0A%0A  # random_password.master will be destroyed%0A  # (because random_password.master is not in configuration)%0A  - resource "random_password" "master" {%0A      - bcrypt_hash      = (sensitive value) -> null%0A      - id               = "none" -> null%0A      - length           = 16 -> null%0A      - lower            = true -> null%0A      - min_lower        = 0 -> null%0A      - min_numeric      = 0 -> null%0A      - min_special      = 0 -> null%0A      - min_upper        = 0 -> null%0A      - number           = true -> null%0A      - numeric          = true -> null%0A      - override_special = "!#$%25&*()-_=+[]{}?:." -> null%0A      - result           = (sensitive value) -> null%0A      - special          = true -> null%0A      - upper            = true -> null%0A    }%0A%0A  # module.aurora_db.aws_db_subnet_group.aurora_subnet_group will be destroyed%0A  # (because aws_db_subnet_group.aurora_subnet_group is not in configuration)%0A  - resource "aws_db_subnet_group" "aurora_subnet_group" {%0A      - arn                     = "arn:aws:rds:us-east-1:154767946691:subgrp:bayer-aurora-project-aurora-subnet-group" -> null%0A      - description             = "Managed by Terraform" -> null%0A      - id                      = "bayer-aurora-project-aurora-subnet-group" -> null%0A      - name                    = "bayer-aurora-project-aurora-subnet-group" -> null%0A      - subnet_ids              = [%0A          - "subnet-0d60f17ef3c678f24",%0A          - "subnet-0d8aaf049924e623f",%0A        ] -> null%0A      - supported_network_types = [%0A          - "IPV4",%0A        ] -> null%0A      - tags                    = {} -> null%0A      - tags_all                = {} -> null%0A      - vpc_id                  = "vpc-06cab60814e52bf9c" -> null%0A        # (1 unchanged attribute hidden)%0A    }%0A%0A  # module.aurora_db.aws_rds_cluster.aurora1 will be destroyed%0A  # (because aws_rds_cluster.aurora1 is not in configuration)%0A  - resource "aws_rds_cluster" "aurora1" {%0A      - allocated_storage                     = 1 -> null%0A      - arn                                   = "arn:aws:rds:us-east-1:154767946691:cluster:bayer-aurora-project-aurora" -> null%0A      - availability_zones                    = [%0A          - "us-east-1a",%0A          - "us-east-1c",%0A          - "us-east-1d",%0A        ] -> null%0A      - backtrack_window                      = 0 -> null%0A      - backup_retention_period               = 1 -> null%0A      - cluster_identifier                    = "bayer-aurora-project-aurora" -> null%0A      - cluster_members                       = [%0A          - "bayer-aurora-project-aurora-1",%0A          - "bayer-aurora-project-aurora-2",%0A        ] -> null%0A      - cluster_resource_id                   = "cluster-4FHOCQ5MYR2QBRRRZZGCEA34S4" -> null%0A      - copy_tags_to_snapshot                 = false -> null%0A      - database_insights_mode                = "standard" -> null%0A      - database_name                         = "bayerdb" -> null%0A      - db_cluster_parameter_group_name       = "default.aurora-mysql5.7" -> null%0A      - db_subnet_group_name                  = "bayer-aurora-project-aurora-subnet-group" -> null%0A      - delete_automated_backups              = true -> null%0A      - deletion_protection                   = true -> null%0A      - enable_global_write_forwarding        = false -> null%0A      - enable_http_endpoint                  = false -> null%0A      - enable_local_write_forwarding         = false -> null%0A      - enabled_cloudwatch_logs_exports       = [] -> null%0A      - endpoint                              = "bayer-aurora-project-aurora.cluster-c6lacmq0ep44.us-east-1.rds.amazonaws.com" -> null%0A      - engine                                = "aurora-mysql" -> null%0A      - engine_lifecycle_support              = "open-source-rds-extended-support" -> null%0A      - engine_mode                           = "provisioned" -> null%0A      - engine_version                        = "5.7.mysql_aurora.2.12.5" -> null%0A      - engine_version_actual                 = "5.7.mysql_aurora.2.12.5" -> null%0A      - final_snapshot_identifier             = "final-bayer-aurora-project-aurora-2025-04-20T123634Z" -> null%0A      - hosted_zone_id                        = "Z2R2ITUGPM61AM" -> null%0A      - iam_database_authentication_enabled   = false -> null%0A      - iam_roles                             = [] -> null%0A      - id                                    = "bayer-aurora-project-aurora" -> null%0A      - iops                                  = 0 -> null%0A      - master_password                       = (sensitive value) -> null%0A      - master_password_wo                    = (write-only attribute) -> null%0A      - master_user_secret                    = [] -> null%0A      - master_username                       = "admin" -> null%0A      - monitoring_interval                   = 0 -> null%0A      - network_type                          = "IPV4" -> null%0A      - performance_insights_enabled          = false -> null%0A      - performance_insights_retention_period = 0 -> null%0A      - port                                  = 3306 -> null%0A      - preferred_backup_window               = "04:26-04:56" -> null%0A      - preferred_maintenance_window          = "fri:10:12-fri:10:42" -> null%0A      - reader_endpoint                       = "bayer-aurora-project-aurora.cluster-ro-c6lacmq0ep44.us-east-1.rds.amazonaws.com" -> null%0A      - skip_final_snapshot                   = false -> null%0A      - storage_encrypted                     = false -> null%0A      - tags                                  = {} -> null%0A      - tags_all                              = {} -> null%0A      - vpc_security_group_ids                = [%0A          - "sg-051e98fd8877ad2fb",%0A        ] -> null%0A        # (12 unchanged attributes hidden)%0A    }%0A%0A  # module.ec2_instance.aws_instance.server will be created%0A  + resource "aws_instance" "server" {%0A      + ami                                  = "ami-0f9de6e2d2f067fca"%0A      + arn                                  = (known after apply)%0A      + associate_public_ip_address          = (known after apply)%0A      + availability_zone                    = (known after apply)%0A      + cpu_core_count                       = (known after apply)%0A      + cpu_threads_per_core                 = (known after apply)%0A      + disable_api_stop                     = (known after apply)%0A      + disable_api_termination              = (known after apply)%0A      + ebs_optimized                        = (known after apply)%0A      + enable_primary_ipv6                  = (known after apply)%0A      + get_password_data                    = false%0A      + host_id                              = (known after apply)%0A      + host_resource_group_arn              = (known after apply)%0A      + iam_instance_profile                 = (known after apply)%0A      + id                                   = (known after apply)%0A      + instance_initiated_shutdown_behavior = (known after apply)%0A      + instance_lifecycle                   = (known after apply)%0A      + instance_state                       = (known after apply)%0A      + instance_type                        = "t2.micro"%0A      + ipv6_address_count                   = (known after apply)%0A      + ipv6_addresses                       = (known after apply)%0A      + key_name                             = "hcl"%0A      + monitoring                           = (known after apply)%0A      + outpost_arn                          = (known after apply)%0A      + password_data                        = (known after apply)%0A      + placement_group                      = (known after apply)%0A      + placement_partition_number           = (known after apply)%0A      + primary_network_interface_id         = (known after apply)%0A      + private_dns                          = (known after apply)%0A      + private_ip                           = (known after apply)%0A      + public_dns                           = (known after apply)%0A      + public_ip                            = (known after apply)%0A      + secondary_private_ips                = (known after apply)%0A      + security_groups                      = (known after apply)%0A      + source_dest_check                    = true%0A      + spot_instance_request_id             = (known after apply)%0A      + subnet_id                            = (known after apply)%0A      + tags                                 = {%0A          + "Name" = "server"%0A        }%0A      + tags_all                             = {%0A          + "Name" = "server"%0A        }%0A      + tenancy                              = (known after apply)%0A      + user_data                            = "0bb66253965fd352048926f2f17da5f0bf35b2cc"%0A      + user_data_base64                     = (known after apply)%0A      + user_data_replace_on_change          = false%0A      + vpc_security_group_ids               = (known after apply)%0A%0A      + capacity_reservation_specification (known after apply)%0A%0A      + cpu_options (known after apply)%0A%0A      + ebs_block_device (known after apply)%0A%0A      + enclave_options (known after apply)%0A%0A      + ephemeral_block_device (known after apply)%0A%0A      + instance_market_options (known after apply)%0A%0A      + maintenance_options (known after apply)%0A%0A      + metadata_options (known after apply)%0A%0A      + network_interface (known after apply)%0A%0A      + private_dns_name_options (known after apply)%0A%0A      + root_block_device (known after apply)%0A    }%0A%0APlan: 2 to add, 0 to change, 4 to destroy.%0A%0AChanges to Outputs:%0A  + instance_id        = (known after apply)%0A  + instance_public_ip = (known after apply)%0A  + security_group_id  = (known after apply)%0A%0A─────────────────────────────────────────────────────────────────────────────%0A%0ANote: You didn't use the -out option to save this plan, so Terraform can't%0Aguarantee to take exactly these actions if you run "terraform apply" now.%0A
 ::debug::stderr: 
 ::debug::exitcode: 0
