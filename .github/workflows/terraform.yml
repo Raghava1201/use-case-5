@@ -73,9 +73,9 @@ jobs:
         working-directory: ./
 
       - name: Apply Terraform
-        run: terraform apply -lock=false
+        run: terraform apply -lock=false -auto-approve
         working-directory: ./
 
       - name: Apply Terraform
-        run: terraform destroy -lock=false
+        run: terraform destroy -lock=false -auto-approve
         working-directory: ./
