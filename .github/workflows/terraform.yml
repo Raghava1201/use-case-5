@@ -1,11 +1,9 @@
-name: Terraform use-case-5
+name: Hackathon
 
 on:
   push:
     branches:
       - main
-  pull_request:
-    types: [opened, synchronize]
 
 permissions:
   id-token: write
@@ -13,10 +11,38 @@ permissions:
   contents: write
 
 jobs:
-  terraform:
-    name: Terraform Actions with Linting and Security
-
+  lint-and-security:
+    name: Lint and Security Checks
     runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install TFLint
+        run: |
+          wget https://github.com/terraform-linters/tflint/releases/download/v0.50.2/tflint_linux_amd64.zip
+          unzip tflint_linux_amd64.zip
+          sudo mv tflint /usr/local/bin/
+          tflint --version
+
+      - name: Run TFLint
+        run: tflint --init && tflint -f compact
+        working-directory: ./
+
+      - name: Install Checkov
+        run: |
+          pip3 install --upgrade pip
+          pip3 install checkov
+
+      - name: Run Checkov
+        run: checkov -d . --framework terraform --soft-fail
+        working-directory: ./
+
+  terraform:
+    name: Terraform Operations
+    runs-on: ubuntu-latest
+    needs: lint-and-security
 
     steps:
       - name: Checkout code
@@ -32,89 +58,24 @@ jobs:
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v2.0.3
         with:
-          terraform_version: ">= 1.11.4"
+          terraform_version: ">= 1.12.0"
 
-      # TFlint Integration
-      - name: Install TFlint
-        run: |
-          wget https://github.com/terraform-linters/tflint/releases/download/v0.50.2/tflint_linux_amd64.zip # Replace with the latest TFlint version
-          unzip tflint_linux_amd64.zip
-          sudo mv tflint /usr/local/bin/
-          tflint --version
-
-      - name: Run TFlint
-        id: tflint
-        run: tflint --init && tflint -f compact
-        working-directory: ./
-
-      # Checkov Integration
-      - name: Install Checkov
-        run: |
-          pip3 install --upgrade pip
-          pip3 install checkov
- 
-      - name: Run Checkov
-        id: checkov
-        run: checkov -d . --framework terraform --soft-fail
-        working-directory: ./
-
-
-      # Terraform Steps
       - name: Initialize Terraform
-        id: init
-        run: terraform init -backend-config="bucket=${{ secrets.TF_STATE_BUCKET }}" -backend-config="key=terraform.tfstate" -backend-config="region=${{ secrets.AWS_REGION }}"
+        run: terraform init
         working-directory: ./
 
       - name: Validate Terraform
-        id: validate
         run: terraform validate
         working-directory: ./
 
       - name: Generate Terraform Plan
-        id: plan
-        run: terraform plan -no-color -lock=false > plan.txt
+        run: terraform plan
         working-directory: ./
-
-      - name: Create Plan Output Text File
-        id: plan_report
-        run: |
-          mkdir -p reports
-          echo "#Deployment Report" > reports/report.txt
-          echo "This file was generated during the github actions workflow run." >> reports/report.txt
-          echo "" >> reports/report.txt
-          echo "## Terraform Plan Output" >> reports/report.txt
-          cat plan.txt >> reports/report.txt
-        working-directory: ./
-      - name: Commit and push the report
-        run: |
-          git config --global user.name "Raghava1201"
-          git config --global user.email "machirajuraghavarao@gmail.com"
-          git add reports/report.txt
-          git commit -m "Add deployment report"
-          git push
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        working-directory: ./
-
-      - name: Comment Plan to Pull Request
-        uses: actions/github-script@v7
-        if: github.event_name == 'pull_request'
-        env:
-          PLAN: "${{ steps.plan.outputs.stdout }}"
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const fs = require('fs');
-            const planOutput = fs.readFileSync('./plan.txt', 'utf8');
-            await github.rest.issues.createComment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: context.event.pull_request.number,
-              body: planOutput
-            });
 
       - name: Apply Terraform
-        id: apply
-        run: terraform apply -auto-approve -lock=false
+        run: terraform apply
         working-directory: ./
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+
+      - name: Apply Terraform
+        run: terraform destroy
+        working-directory: ./
