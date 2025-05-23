@@ -69,13 +69,13 @@ jobs:
         working-directory: ./
 
       - name: Generate Terraform Plan
-        run: terraform plan
+        run: terraform plan -lock=false
         working-directory: ./
 
       - name: Apply Terraform
-        run: terraform apply
+        run: terraform apply -lock=false
         working-directory: ./
 
       - name: Apply Terraform
-        run: terraform destroy
+        run: terraform destroy -lock=false
         working-directory: ./
