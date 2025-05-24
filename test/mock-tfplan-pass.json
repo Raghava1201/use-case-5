@@ -1,0 +1,23 @@
+{
+  "resource_changes": [
+    {
+      "address": "module.ec2.aws_instance.server",
+      "mode": "managed",
+      "type": "aws_instance",
+      "name": "server",
+      "provider_name": "registry.terraform.io/hashicorp/aws",
+      "change": {
+        "actions": ["create"],
+        "before": null,
+        "after": {
+          "ami": "ami-0f9de6e2d2f067fca",
+          "instance_type": "t2.micro",
+          "tags": {
+            "Name": "AllowedInstance"
+          }
+        },
+        "after_unknown": {}
+      }
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+test "pass_t2_micro" {
+  rules = {
+    main = true
+  }
+  mock "tfplan/v2" {
+    path = "mock-tfplan-pass.json"
+  }
+}
+
+test "fail_m1_large" {
+  rules = {
+    main = false
+  }
+  mock "tfplan/v2" {
+    path = "mock-tfplan-fail.json"
+  }
+}

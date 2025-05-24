@@ -1,0 +1,25 @@
+import "tfplan/v2" as tfplan
+
+# Define allowed instance types
+allowed_instance_types = [
+  "t2.micro",
+  "t3.small",
+  "m5.large",
+]
+
+# Filter for aws_instance resources being created or updated
+ec2_instances = filter tfplan.resource_changes as _, rc {
+  rc.type is "aws_instance" and (rc.change.actions contains "create" or rc.change.actions contains "update")
+}
+
+# Rule to check if the instance type is within the allowed list
+instance_type_check = rule {
+  all ec2_instances as _, instance {
+    instance.change.after.instance_type in allowed_instance_types
+  }
+}
+
+# The main rule that Sentinel evaluates
+main = rule {
+  instance_type_check
+}
