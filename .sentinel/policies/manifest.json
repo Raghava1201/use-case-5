@@ -1,0 +1,10 @@
+{
+	"records": [
+		{
+			"key": "restrict-instance-type",
+			"source": "./restrict-instance-type.sentinel",
+			"sourceSum": "",
+			"dest": "/workspaces/use-case-5/restrict-instance-type.sentinel"
+		}
+	]
+}

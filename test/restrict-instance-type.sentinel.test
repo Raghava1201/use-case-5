@@ -1,17 +1,21 @@
-test "pass_t2_micro" {
-  rules = {
-    main = true
-  }
+test {
+  # Should pass for t2.micro
   mock "tfplan/v2" {
-    path = "mock-tfplan-pass.json"
+    data = import "test/mock-tfplan-pass.json"
+  }
+  policy = file("restrict-instance-type.sentinel")
+  assert {
+    main is true
   }
 }
 
-test "fail_m1_large" {
-  rules = {
-    main = false
-  }
+test {
+  # Should fail for t2.large
   mock "tfplan/v2" {
-    path = "mock-tfplan-fail.json"
+    data = import "test/mock-tfplan-fail.json"
+  }
+  policy = file("restrict-instance-type.sentinel")
+  assert {
+    main is false
   }
 }
